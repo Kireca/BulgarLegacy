@@ -1,9 +1,6 @@
 package bg.bulgarlegacy.model.entites;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
@@ -11,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,7 +24,7 @@ public class ArticleEntity extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     @NotNull
-    private String article;
+    private String content;
 
     @Column(columnDefinition = "TEXT")
     private String imageUrl;
@@ -37,7 +35,9 @@ public class ArticleEntity extends BaseEntity {
 
     @NotNull
     @ManyToOne
-    private ArticleAuthorEntity author;
+    private UserEntity author;
 
+    @OneToMany
+    private List<Comment> comments;
 
 }
