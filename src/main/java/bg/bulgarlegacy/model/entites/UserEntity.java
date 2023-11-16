@@ -23,13 +23,11 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<UserRoleEntity> roles;
 
-
     @Email
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String password;
+    private boolean active;
 
     @Column(nullable = false)
     private String firstName;
@@ -37,5 +35,7 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String lastName;
 
+    @Column(nullable = false)
+    private String password;
 
 }

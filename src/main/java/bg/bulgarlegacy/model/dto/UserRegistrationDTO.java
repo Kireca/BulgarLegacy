@@ -1,6 +1,7 @@
 package bg.bulgarlegacy.model.dto;
 
 
+import bg.bulgarlegacy.model.validation.UniqueUserEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,9 +22,13 @@ public class UserRegistrationDTO {
     private String lastName;
 
     @Email
-    private String emailName;
+    @UniqueUserEmail
+    private String email;
+
+    @NotNull
 
     private String password;
 
+    @NotNull
     private String confirmPassword;
 }
