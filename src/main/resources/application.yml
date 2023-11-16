@@ -6,13 +6,13 @@ logging:
                 orm:
                     jdbc:
                         bind: TRACE
-#mobilele:
-#    default:
-#        admin:
-#            pass: ${DEFAULT_ADMIN_PASS:topsecret}
-#    remember:
-#        me:
-#            key: ${REMEMBER_ME:topsecret}
+bulgarLegacy:
+    default:
+        admin:
+            pass: ${DEFAULT_ADMIN_PASS:topsecret}
+    remember:
+        me:
+            key: ${REMEMBER_ME:topsecret}
 #open:
 #    exchange:
 #        rates:
