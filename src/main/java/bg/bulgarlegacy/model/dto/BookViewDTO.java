@@ -1,6 +1,7 @@
 package bg.bulgarlegacy.model.dto;
 
 import bg.bulgarlegacy.model.entites.BookAuthorEntity;
+import bg.bulgarlegacy.model.enums.GenreEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,8 @@ public class BookViewDTO {
     private BookAuthorEntity author;
 
     private BigDecimal price;
+
+    private GenreEnum genre;
 
     private String imageUrl;
 

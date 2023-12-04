@@ -1,10 +1,15 @@
-package bg.bulgarlegacy.model.entites;
+package bg.bulgarlegacy.model.dto;
 
+import bg.bulgarlegacy.model.entites.BookAuthorEntity;
 import bg.bulgarlegacy.model.enums.GenreEnum;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,33 +22,31 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+public class CreateBookDTO {
 
-@Entity
-@Table(name = "books")
-public class BookEntity extends BaseEntity {
-
-    @NotNull
-    @JdbcTypeCode(Types.VARCHAR)
     private UUID uuid;
 
     @NotNull
     @Column(unique = true)
-    @Size(min = 3 , max = 100)
+    @Size(min = 3, max = 100)
     private String title;
 
     @NotNull
-    @ManyToOne
-    private BookAuthorEntity author;
+    private String authorFirstName;
+
+    @NotNull
+    private String authorLastName;
 
     @NotNull
     @Positive
     private BigDecimal price;
 
-    @Enumerated(EnumType.STRING)
+
     @NotNull
     private GenreEnum genre;
 
     @NotNull
-    @Column(name = "image_url")
     private String imageUrl;
+
 }

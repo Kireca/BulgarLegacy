@@ -1,6 +1,7 @@
 package bg.bulgarlegacy.service;
 
 import bg.bulgarlegacy.model.dto.BookViewDTO;
+import bg.bulgarlegacy.model.dto.CreateBookDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,4 +16,7 @@ public interface BookService {
     Optional<BookViewDTO> getBookDetail(UUID uuid);
 
     void deleteBook(UUID bookUuid);
+
+    UUID createBook(CreateBookDTO createBookDTO);
+
 }

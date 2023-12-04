@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>MobiLeLeLe</title>
+    <title>Bulgar Legacy</title>
     <link rel="stylesheet" th:href="@{/css/reset-css.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="container-fluid">
-    <h2 class="text-center text-white mt-5">Details</h2>
+    <h2 class="text-center text-white mt-5">Детайли</h2>
     <div class="offers row mx-auto d-flex flex-row justify-content-center">
         <div th:object="${bookDetail}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
 
@@ -30,20 +30,24 @@
                 <li class="list-group-item">
 
                     <div class="card-text">
-                        <span> <b>Title:</b></span></div>
+                        <span> <b>Заглавие:</b></span></div>
                     <th:block th:text="*{title}"></th:block>
                     <div class="card-text">
-                        <span> <b>Author:</b> </span></div>
+                        <span> <b>Автор:</b> </span></div>
                     <th:block th:text="*{authorFullName()}"></th:block>
+
                     <div class="card-text">
-                        <span><b>Price:</b></span></div>
+                        <span><b>Жанр:</b></span></div>
+                    <th:block th:text="*{genre}"></th:block>
+                    <div class="card-text">
+                        <span><b>Цена:</b></span></div>
                     <th:block th:text="*{price}"></th:block>
                 </li>
             </ul>
             <div class="card-body" sec:authorize="isAuthenticated()">
                 <form th:method="delete"
                       th:action="@{/book/{offerUUID}(offerUUID=*{uuid})}">
-                    <input type="submit" value="Delete" class="link card-link"/>
+                    <input type="submit" value="Изтрий Книга" class="link card-link"/>
                 </form>
             </div>
         </div>
