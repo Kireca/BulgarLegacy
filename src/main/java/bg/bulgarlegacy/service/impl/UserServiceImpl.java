@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userRegistrationDTO.getFirstName());
         user.setLastName(userRegistrationDTO.getLastName());
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
-        user.setActive(true);
+        user.setActive(false);
         return user;
     }
 }
