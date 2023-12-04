@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bulgar Legacy</title>
+    <link rel="stylesheet" th:href="@{/css/reset-css.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <script th:src="@{/js/jquery-3.5.1.slim.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <style> body {
+        background-image: url('/images/статия.jpg')
+    }</style>
+
+</head>
+
+<body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container-fluid">
+    <h2 class="text-center text-white mt-5">Статия</h2>
+    <div class="offers row mx-auto d-flex flex-row justify-content-center">
+        <div th:object="${articleDetails}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
+
+            <ul class="offer-details list-group list-group-flush">
+                <li class="list-group-item">
+
+                    <div class="card-text">
+                        <span> <b>Заглавие:</b></span></div>
+                    <th:block th:text="*{title}"></th:block>
+                    <div class="card-text">
+                        <span> <b>Автор:</b> </span></div>
+                    <th:block th:text="*{getAuthor().getUsername()}"></th:block>
+
+                    <div class="card-text">
+                        <span><b>Публикувана:</b></span></div>
+                    <th:block th:text="*{published}"></th:block>
+                    <div class="card-text">
+                        <span><b>Съдържание:</b></span></div>
+                    <th:block th:text="*{content}"></th:block>
+                </li>
+            </ul>
+            <div class="card-body" sec:authorize="isAuthenticated()">
+                <form th:method="delete"
+                      th:action="@{/book/{offerUUID}(offerUUID=*{uuid})}">
+                    <input type="submit" value="Изтрий Статия" class="link card-link"/>
+                </form>
+            </div>
+        </div>
+        <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
+            <img th:src="*{articleDetails.getImageUrl()}" class="card-img-top" alt="Image">
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <div class="d-flex flex-column comment-section">
+                <div class="bg-white p-2">
+                    <div class="d-flex flex-row user-info"><img class="rounded-circle"
+                                                                src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                class="d-block font-weight-bold name">Marry Andrews</span><span
+                                class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                    </div>
+                    <div class="mt-2">
+                        <p class="comment-text"> ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                </div>
+                <div class="bg-white">
+                    <div class="d-flex flex-row fs-12">
+                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span>
+                        </div>
+                        <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span>
+                        </div>
+                        <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
+                    </div>
+                </div>
+                <div class="bg-light p-2">
+                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
+                                                                        src="https://i.imgur.com/RpzrMR2.jpg"
+                                                                        width="40"><textarea
+                            class="form-control ml-1 shadow-none textarea"></textarea></div>
+                    <div class="mt-2 text-right">
+                        <button class="btn btn-primary btn-sm shadow-none" type="button">Post comment</button>
+                        <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>
+
+</body>
+</html>

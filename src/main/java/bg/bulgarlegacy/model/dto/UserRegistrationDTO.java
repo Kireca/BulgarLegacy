@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Getter
 @Setter
@@ -18,6 +19,10 @@ import lombok.Setter;
 
 @FieldMatch(first = "password", second = "confirmPassword", message = "Passwords don't match!")
 public class UserRegistrationDTO {
+
+    @NotNull
+    @Size(min = 2,max = 20)
+    private String username;
 
     @NotEmpty
     @Size(min = 2, max = 20)

@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private UserEntity map(UserRegistrationDTO userRegistrationDTO) {
         UserEntity user = new UserEntity();
 
+        user.setUsername(userRegistrationDTO.getUsername());
         user.setEmail(userRegistrationDTO.getEmail());
         user.setFirstName(userRegistrationDTO.getFirstName());
         user.setLastName(userRegistrationDTO.getLastName());

@@ -2,10 +2,12 @@ package bg.bulgarlegacy.model.entites;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
 
@@ -29,6 +31,11 @@ public class UserEntity extends BaseEntity {
     private String email;
 
     private boolean active;
+
+    @NotNull
+    @UniqueElements
+    @Size(min = 2,max = 20)
+    private String username;
 
     @Column(nullable = false)
     @Size(min = 2,max = 20)
