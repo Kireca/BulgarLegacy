@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bulgar Legacy</title>
+    <link rel="stylesheet" th:href="@{/css/reset-css.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <script th:src="@{/js/jquery-3.5.1.slim.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <style> body {
+      background-image: url('/images/formsPage.jpg')
+    }</style>
+  </head>
+</head>
+
+<body>
+
+<div>
+  <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+<div class="container-fluid">
+
+  <h5 class="text-center text-white mt-5"> <b> Upps, something went terribly wrong! </b></h5>
+  <h5 class="text-center text-white mt-5"> <b> We are very sorry, and we are working to resolve the problem! </b> </h5>
+  <img th:src="@{/images/brokenBookTransperant.png}" class="figure-img" alt="Broken Book">
+</div>
+
+<div>
+  <footer></footer>
+</div>
+
+</body>
+</html>

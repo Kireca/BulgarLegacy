@@ -41,8 +41,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void deleteBook(UUID offerUUID) {
-        bookRepository.deleteByUuid(offerUUID);
+    public void deleteBook(UUID bookUuid) {
+        bookRepository.deleteByUuid(bookUuid);
     }
 
     @Override

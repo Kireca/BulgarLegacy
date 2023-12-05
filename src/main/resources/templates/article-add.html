@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bulgar Legacy</title>
+  <link rel="stylesheet" th:href="@{/css/reset-css.css}"/>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+  <script th:src="@{/js/jquery-3.5.1.slim.min.js}"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+  <style> body {
+    background-image: url('/images/статия.jpg')
+  }</style>
+
+</head>
+
+<body>
+<div>
+  <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+
+<div class="container">
+  <h2 class="text-center text-white">Добави книга</h2>
+  <form th:method="POST"
+        th:action="@{/article/add}"
+        th:object="${createArticleDTO}"
+        class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+
+    <!--        TITLE-->
+    <div class="row">
+      <div class="form-group col-md-6 mb-3 text-center">
+        <label class="text-center text-white font-weight-bold"  for="title">Заглавие:</label>
+        <input
+                id="title"
+                th:field="*{title}"
+                th:errorclass="is-invalid"
+                type="text"
+                class="form-control"
+                placeholder="Put book title here" >
+        <p class="invalid-feedback errors alert alert-danger">
+          Article Title is required.
+        </p>
+      </div>
+
+
+      <!--        IMAGE URL-->
+      <div class="form-group col-md-6 mb-3 text-center ">
+        <label class="text-center text-white font-weight-bold" for="imageUrl">Линк за Изображение:</label>
+        <input
+                id="imageURL"
+                th:name="imageUrl"
+                th:field="*{imageUrl}"
+                th:errorclass="is-invalid"
+                type="url"
+                class="form-control"
+                placeholder="Put vehicle image URL here">
+        <p class="invalid-feedback errors alert alert-danger">
+          Article image URL is required.
+        </p>
+      </div>
+
+
+
+      <!--        CONTENT-->
+      <div class="form-control-range text-center">
+        <label class="text-white font-weight-bold" for="content">Съдържание:</label>
+        <textarea
+                id="content"
+                th:errorclass="is-invalid"
+                th:field="*{content}"
+                type="textarea"
+                class="form-control"
+                rows="8"
+                placeholder="Content"></textarea>
+        <p class="invalid-feedback errors alert alert-danger">
+          Content is required.
+        </p>
+      </div>
+
+
+
+
+    <div class="row">
+      <div class="col col-md-4">
+        <div class="button-holder d-flex">
+          <input type="submit" class="btn btn-info btn-lg" value="Добави статия"/>
+        </div>
+      </div>
+    </div>
+    </div>
+  </form>
+</div>
+
+<div>
+  <footer th:replace="~{fragments/footer}" ></footer>
+</div>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 package bg.bulgarlegacy.model.entites;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -9,13 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 
 @Entity
 @Table(name = "comments")
-public class Comment extends BaseEntity {
+public class CommentEntity extends BaseEntity {
 
     @NotNull
     @Size(min = 3, max = 100)
@@ -25,4 +28,8 @@ public class Comment extends BaseEntity {
     @NotNull
     private UserEntity author;
 
+    @ManyToOne
+    private ArticleEntity article;
+
+    private LocalDateTime published;
 }

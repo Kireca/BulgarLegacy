@@ -3,12 +3,10 @@ package bg.bulgarlegacy.model.entites;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Types;
 import java.time.LocalDate;
@@ -47,7 +45,7 @@ public class ArticleEntity extends BaseEntity {
     @ManyToOne
     private UserEntity author;
 
-    @OneToMany
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "article")
+    private List<CommentEntity> comments;
 
 }

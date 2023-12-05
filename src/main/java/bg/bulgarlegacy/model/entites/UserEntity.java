@@ -32,8 +32,7 @@ public class UserEntity extends BaseEntity {
 
     private boolean active;
 
-    @NotNull
-    @UniqueElements
+    @Column(unique = true,nullable = false)
     @Size(min = 2,max = 20)
     private String username;
 

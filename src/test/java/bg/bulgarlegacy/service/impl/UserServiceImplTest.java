@@ -2,8 +2,8 @@ package bg.bulgarlegacy.service.impl;
 
 import bg.bulgarlegacy.model.entites.UserEntity;
 import bg.bulgarlegacy.repository.UserRepository;
+import bg.bulgarlegacy.repository.UserRoleRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,10 +23,12 @@ class UserServiceImplTest {
     private UserRepository mockUserRepository;
     @Mock
     private PasswordEncoder mockPasswordEncoder;
+    @Mock
+    private UserRoleRepository userRoleRepository;
 
     @BeforeEach
     void setUp() {
-        serviceToTest = new UserServiceImpl(mockUserRepository, mockPasswordEncoder);
+        serviceToTest = new UserServiceImpl(mockUserRepository, mockPasswordEncoder , userRoleRepository);
     }
 
 

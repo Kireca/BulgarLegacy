@@ -1,13 +1,21 @@
 package bg.bulgarlegacy.service.impl;
 
 import bg.bulgarlegacy.model.dto.ArticleViewDTO;
+import bg.bulgarlegacy.model.dto.CreateArticleDTO;
 import bg.bulgarlegacy.model.entites.ArticleEntity;
+import bg.bulgarlegacy.model.entites.UserEntity;
 import bg.bulgarlegacy.repository.ArticleRepository;
+import bg.bulgarlegacy.repository.UserRepository;
 import bg.bulgarlegacy.service.ArticleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,9 +24,13 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository) {
+
+
+    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -34,6 +46,54 @@ public class ArticleServiceImpl implements ArticleService {
                 .map(ArticleServiceImpl::mapAsView);
     }
 
+    @Override
+    public UUID createArticle(CreateArticleDTO createArticleDTO) {
+
+
+        ArticleEntity newArticleEntity = map(createArticleDTO);
+
+        articleRepository.save(newArticleEntity);
+
+        return newArticleEntity.getUuid();
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteArticle(UUID articleUuid) {
+        articleRepository.deleteByUuid(articleUuid);
+    }
+
+    @Override
+    public ArticleEntity getArticleByUuid(UUID uuid) {
+        return articleRepository.findByUuid(uuid).orElseThrow();
+    }
+
+
+    private ArticleEntity map(CreateArticleDTO createArticleDTO) {
+        ArticleEntity newArticle = new ArticleEntity();
+
+        UserEntity currentUser = getCurrentUser();
+
+
+        newArticle.setUuid(UUID.randomUUID());
+        newArticle.setAuthor(currentUser);
+        newArticle.setPublished(LocalDate.now());
+        newArticle.setContent(createArticleDTO.getContent());
+        newArticle.setTitle(createArticleDTO.getTitle());
+        newArticle.setImageUrl(createArticleDTO.getImageUrl());
+
+
+        return articleRepository.save(newArticle);
+    }
+
+    private UserEntity getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String currentUserEmail = userDetails.getUsername();
+        return userRepository.findByEmail(currentUserEmail).orElseThrow();
+    }
+
 
     private static ArticleViewDTO mapAsView(ArticleEntity articleEntity) {
         ArticleViewDTO mappedArticle = new ArticleViewDTO();
@@ -46,7 +106,6 @@ public class ArticleServiceImpl implements ArticleService {
         mappedArticle.setAuthor(articleEntity.getAuthor());
 
         return mappedArticle;
-
     }
 
 }

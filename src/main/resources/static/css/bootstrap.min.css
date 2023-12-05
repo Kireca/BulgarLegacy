@@ -6082,7 +6082,14 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 }
 
 .bg-white {
-    background-color: #fff !important
+    background-color: white !important
+}
+
+.max-size {
+
+    max-width: 600px;
+    max-height: 320px;
+
 }
 
 .bg-transparent {
@@ -6551,6 +6558,11 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     -webkit-box-pack: center !important;
     -ms-flex-pack: center !important;
     justify-content: center !important
+}
+
+.comment-box {
+    overflow: scroll;
+
 }
 
 .justify-content-between {
@@ -7547,6 +7559,12 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 .ml-2, .mx-2 {
     margin-left: .5rem !important
 }
+
+.comment-border{
+    border-color: black;
+    background-color: lightgrey;
+}
+
 
 .m-3 {
     margin: 1rem !important

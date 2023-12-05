@@ -17,7 +17,9 @@ public class UserLoginController {
         return "auth-login";
     }
 
-    @GetMapping("/users/login-error")
+
+
+    @GetMapping("/login-error")
     public String onFailure(
             @ModelAttribute("email") String email,
             Model model) {

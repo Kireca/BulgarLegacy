@@ -25,6 +25,8 @@ public class BulgarLegacyUserDetailsService implements UserDetailsService {
                 .map(BulgarLegacyUserDetailsService::map).orElseThrow(() -> new UsernameNotFoundException("User " + email + " not found!"));
     }
 
+
+
     private static UserDetails map(UserEntity userEntity) {
         return User
                 .withUsername(userEntity.getEmail())

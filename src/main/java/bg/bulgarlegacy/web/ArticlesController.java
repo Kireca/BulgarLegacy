@@ -8,6 +8,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -30,7 +31,7 @@ public class ArticlesController {
     @GetMapping("/all")
     public String all(Model model,
                       @PageableDefault(
-                              size = 3,
+                              size = 8,
                               sort = "uuid"
                       ) Pageable pageable) {
         Page<ArticleViewDTO> allArticles = articleService.getAllArticles(pageable);
@@ -39,5 +40,7 @@ public class ArticlesController {
 
         return "articles";
     }
+
+
 
 }
