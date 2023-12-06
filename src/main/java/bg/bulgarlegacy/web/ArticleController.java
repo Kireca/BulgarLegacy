@@ -3,6 +3,7 @@ package bg.bulgarlegacy.web;
 import bg.bulgarlegacy.model.dto.ArticleViewDTO;
 import bg.bulgarlegacy.model.dto.CommentViewDTO;
 import bg.bulgarlegacy.model.dto.CreateArticleDTO;
+import bg.bulgarlegacy.model.dto.CreateCommentDTO;
 import bg.bulgarlegacy.service.ArticleService;
 import bg.bulgarlegacy.service.CommentService;
 import bg.bulgarlegacy.service.exceptions.ObjectNotFoundException;
@@ -24,7 +25,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final CommentService commentService;
-    private  UUID placeHolderUUID;
+    private UUID placeHolderUUID;
 
     public ArticleController(ArticleService articleService, CommentService commentService) {
         this.articleService = articleService;
@@ -39,6 +40,7 @@ public class ArticleController {
             model.addAttribute("createArticleDTO", new CreateArticleDTO());
 
         }
+
         return "article-add";
     }
 
@@ -47,13 +49,13 @@ public class ArticleController {
                       BindingResult bindingResult,
                       RedirectAttributes rAtt) {
 
-
         if (bindingResult.hasErrors()) {
             rAtt.addFlashAttribute("createArticleDTO", createArticleDTO);
             rAtt.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.createOfferDTO", bindingResult);
+                    "org.springframework.validation.BindingResult.createArticleDTO", bindingResult);
             return "redirect:/article/add";
         }
+
 
         UUID newArticleUUID = articleService.createArticle(createArticleDTO);
 
@@ -71,9 +73,43 @@ public class ArticleController {
 
         model.addAttribute("comments", comments);
         model.addAttribute("articleDetails", articleViewDTO);
-       placeHolderUUID = uuid;
+
+
+        placeHolderUUID = uuid;
         return "article-details";
     }
+
+    @ModelAttribute
+    public CreateCommentDTO createCommentDTO(){
+        return new CreateCommentDTO();
+    }
+
+
+    @GetMapping("/comment")
+    public String addComment(Model model) {
+
+        if (!model.containsAttribute("createCommentDTO")) {
+            model.addAttribute("createCommentDTO", new CreateCommentDTO());
+        }
+        return "redirect:/article/" + placeHolderUUID;
+    }
+
+    @PostMapping("/comment")
+    public String addComment(@Valid CreateCommentDTO createCommentDTO,
+                             BindingResult bindingResult,
+                             RedirectAttributes rAtt) {
+
+        if (bindingResult.hasErrors()) {
+            rAtt.addFlashAttribute("createCommentDTO", createCommentDTO);
+            rAtt.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.createCommentDTO", bindingResult);
+            return "redirect:/article/" + placeHolderUUID;
+        }
+        Long id = articleService.getArticleDetail(placeHolderUUID).orElseThrow().getAuthor().getId();
+        commentService.createComment(createCommentDTO, placeHolderUUID, id);
+        return "redirect:/article/" + placeHolderUUID;
+    }
+
 
     @DeleteMapping("/{uuid}")
     public String delete(@PathVariable("uuid") UUID uuid) {
