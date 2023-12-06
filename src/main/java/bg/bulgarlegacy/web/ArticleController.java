@@ -94,10 +94,11 @@ public class ArticleController {
         return "redirect:/article/" + placeHolderUUID;
     }
 
-    @PostMapping("/comment")
+    @PostMapping("{uuid}/comment")
     public String addComment(@Valid CreateCommentDTO createCommentDTO,
                              BindingResult bindingResult,
-                             RedirectAttributes rAtt) {
+                             RedirectAttributes rAtt,
+                             @PathVariable UUID uuid) {
 
         if (bindingResult.hasErrors()) {
             rAtt.addFlashAttribute("createCommentDTO", createCommentDTO);
