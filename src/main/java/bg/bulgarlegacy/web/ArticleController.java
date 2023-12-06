@@ -85,8 +85,8 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/comment")
-    public String addComment(Model model) {
+    @GetMapping("{uuid}/comment")
+    public String addComment( Model model) {
 
         if (!model.containsAttribute("createCommentDTO")) {
             model.addAttribute("createCommentDTO", new CreateCommentDTO());
@@ -94,7 +94,7 @@ public class ArticleController {
         return "redirect:/article/" + placeHolderUUID;
     }
 
-    @PostMapping("/comment")
+    @PostMapping("/{uuid}/comment")
     public String addComment(@Valid CreateCommentDTO createCommentDTO,
                              BindingResult bindingResult,
                              RedirectAttributes rAtt) {

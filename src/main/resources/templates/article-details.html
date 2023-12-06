@@ -109,7 +109,7 @@
                 <div class="d-flex flex-row align-items-start"
 
                      th:method="POST"
-                     th:action="@{/admin/update-product/{uuid}(uuid = ${uuid})}"
+                     th:action="@{/article/{uuid}(uuid = ${uuid})/comment}"
                      th:object="${createCommentDTO}">
 
                     <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
