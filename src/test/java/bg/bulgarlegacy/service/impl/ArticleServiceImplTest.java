@@ -1,6 +1,7 @@
 package bg.bulgarlegacy.service.impl;
 
 import bg.bulgarlegacy.model.dto.ArticleViewDTO;
+import bg.bulgarlegacy.model.dto.CreateArticleDTO;
 import bg.bulgarlegacy.model.entites.ArticleEntity;
 import bg.bulgarlegacy.model.entites.UserEntity;
 import bg.bulgarlegacy.repository.ArticleRepository;
@@ -11,8 +12,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -20,8 +25,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ArticleServiceImplTest {
 
@@ -36,52 +41,87 @@ class ArticleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        articleService = new ArticleServiceImpl(articleRepository, userRepository);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void getAllArticles_ReturnsPageOfArticleViewDTO() {
-        // Mocking data
-        Pageable pageable = mock(Pageable.class);
-        ArticleEntity articleEntity = createMockArticleEntity();
-        Page<ArticleEntity> articleEntities = new PageImpl<>(Collections.singletonList(articleEntity));
-        when(articleRepository.findAll(pageable)).thenReturn(articleEntities);
+    void getAllArticles_ReturnsArticleViewDTOPage() {
 
-        // Test
-        Page<ArticleViewDTO> result = articleService.getAllArticles(pageable);
+        Page<ArticleEntity> articleEntityPage = mock(Page.class);
+        when(articleRepository.findAll(any(Pageable.class))).thenReturn(articleEntityPage);
 
-        assertNotNull(result);
-        assertEquals(1, result.getContent().size());
-        // Add more assertions as needed based on the expected behavior
+
+        Page<ArticleViewDTO> result = articleService.getAllArticles(Pageable.unpaged());
+
+
+        assertEquals(articleEntityPage.map(ArticleServiceImpl::mapAsView), result);
+        verify(articleRepository, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
-    void getArticleDetail_ReturnsOptionalArticleViewDTO() {
-        // Mocking data
+    void getArticleDetail_ReturnsArticleViewDTO() {
         UUID uuid = UUID.randomUUID();
-        ArticleEntity articleEntity = createMockArticleEntity();
+        ArticleEntity articleEntity = new ArticleEntity();
+        articleEntity.setUuid(uuid);
         when(articleRepository.findByUuid(uuid)).thenReturn(Optional.of(articleEntity));
 
-        // Test
         Optional<ArticleViewDTO> result = articleService.getArticleDetail(uuid);
 
         assertTrue(result.isPresent());
-        // Add more assertions as needed based on the expected behavior
+        assertEquals(articleEntity.getUuid(), result.get().getUuid());
+        verify(articleRepository, times(1)).findByUuid(uuid);
     }
 
-    // Helper method to create a mock ArticleEntity
-    private ArticleEntity createMockArticleEntity() {
+    @Test
+    void createArticle_CreatesArticleAndReturnsUUID() {
+
+        CreateArticleDTO createArticleDTO = new CreateArticleDTO();
+        ArticleEntity newArticleEntity = new ArticleEntity();
+        newArticleEntity.setUuid(UUID.randomUUID());
+
+        Authentication authentication = mock(Authentication.class);
+        UserDetails userDetails = User.withUsername("testuser").password("password").roles("USER").build();
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(new UserEntity()));
+
+
+        UUID result = articleService.createArticle(createArticleDTO);
+
+
+        assertNotNull(result);
+        verify(articleRepository, times(1)).save(any());
+    }
+
+    @Test
+    void deleteArticle_DeletesArticle() {
+
+        UUID articleUuid = UUID.randomUUID();
+
+
+        articleService.deleteArticle(articleUuid);
+
+
+        verify(articleRepository, times(1)).deleteByUuid(articleUuid);
+    }
+
+    @Test
+    void getArticleByUuid_ReturnsArticleEntity() {
+
+        UUID uuid = UUID.randomUUID();
         ArticleEntity articleEntity = new ArticleEntity();
-        articleEntity.setUuid(UUID.randomUUID());
-        articleEntity.setAuthor(new UserEntity());
-        articleEntity.setPublished(LocalDate.now());
-        articleEntity.setContent("Sample Content");
-        articleEntity.setTitle("Sample Title");
-        articleEntity.setImageUrl("sample-image-url");
-        return articleEntity;
+        when(articleRepository.findByUuid(uuid)).thenReturn(Optional.of(articleEntity));
+
+        // Act
+        ArticleEntity result = articleService.getArticleByUuid(uuid);
+
+
+        assertNotNull(result);
+        verify(articleRepository, times(1)).findByUuid(uuid);
     }
 
-    // Write similar tests for other methods like createArticle, deleteArticle, etc.
-    // Mock necessary dependencies and verify method behaviors as expected
 }

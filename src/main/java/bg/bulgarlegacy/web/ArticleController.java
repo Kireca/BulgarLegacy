@@ -85,32 +85,33 @@ public class ArticleController {
     }
 
 
-    @GetMapping("{uuid}/comment")
-    public String addComment(@PathVariable UUID uuid, Model model) {
-
-        if (!model.containsAttribute("createCommentDTO")) {
-            model.addAttribute("createCommentDTO", new CreateCommentDTO());
-        }
-        return "redirect:/article/" + placeHolderUUID;
-    }
-
-    @PostMapping("{uuid}/comment")
-    public String addComment(@Valid CreateCommentDTO createCommentDTO,
-                             BindingResult bindingResult,
-                             RedirectAttributes rAtt,
-                             @PathVariable UUID uuid) {
-
-        if (bindingResult.hasErrors()) {
-            rAtt.addFlashAttribute("createCommentDTO", createCommentDTO);
-            rAtt.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.createCommentDTO", bindingResult);
-            return "redirect:/article/" + placeHolderUUID;
-        }
-        Long id = articleService.getArticleDetail(placeHolderUUID).orElseThrow().getAuthor().getId();
-        commentService.createComment(createCommentDTO, placeHolderUUID, id);
-        return "redirect:/article/" + placeHolderUUID;
-    }
-
+//    @GetMapping("{uuid}/comment")
+//    public String addComment(@PathVariable UUID uuid, Model model) {
+//
+//        if (!model.containsAttribute("createCommentDTO")) {
+//            model.addAttribute("createCommentDTO", new CreateCommentDTO());
+//        }
+//        return "redirect:/article/" + placeHolderUUID;
+//    }
+//
+//    @PostMapping("{uuid}/comment")
+//    public String addComment(@Valid CreateCommentDTO createCommentDTO,
+//                             @PathVariable UUID uuid,
+//                             BindingResult bindingResult,
+//                             RedirectAttributes rAtt
+//                             ) {
+//
+//        if (bindingResult.hasErrors()) {
+//            rAtt.addFlashAttribute("createCommentDTO", createCommentDTO);
+//            rAtt.addFlashAttribute(
+//                    "org.springframework.validation.BindingResult.createCommentDTO", bindingResult);
+//            return "redirect:/article/" + placeHolderUUID;
+//        }
+//        Long id = articleService.getArticleDetail(placeHolderUUID).orElseThrow().getAuthor().getId();
+//        commentService.createComment(createCommentDTO, placeHolderUUID, id);
+//        return "redirect:/article/" + placeHolderUUID;
+//    }
+//
 
     @DeleteMapping("/{uuid}")
     public String delete(@PathVariable("uuid") UUID uuid) {

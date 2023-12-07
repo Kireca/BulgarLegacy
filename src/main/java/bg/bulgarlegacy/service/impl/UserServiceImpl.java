@@ -7,7 +7,6 @@ import bg.bulgarlegacy.model.enums.UserRoleEnum;
 import bg.bulgarlegacy.repository.UserRepository;
 import bg.bulgarlegacy.repository.UserRoleRepository;
 import bg.bulgarlegacy.service.UserService;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

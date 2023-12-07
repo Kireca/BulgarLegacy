@@ -33,7 +33,6 @@ public class UserRegistrationController {
         return "auth-register";
     }
 
-
     @PostMapping("/register")
     public String register(@Valid UserRegistrationDTO userRegistrationDTO,
                            BindingResult bindingResult,

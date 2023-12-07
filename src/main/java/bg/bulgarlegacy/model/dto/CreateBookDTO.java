@@ -1,11 +1,7 @@
 package bg.bulgarlegacy.model.dto;
 
-import bg.bulgarlegacy.model.entites.BookAuthorEntity;
 import bg.bulgarlegacy.model.enums.GenreEnum;
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -13,10 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
 
 import java.math.BigDecimal;
-import java.sql.Types;
 import java.util.UUID;
 
 @Getter

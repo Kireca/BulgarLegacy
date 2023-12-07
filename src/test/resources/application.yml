@@ -1,0 +1,31 @@
+bulgarLegacy:
+    default:
+        admin:
+            pass: topsecret
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true
+    remember:
+        me:
+            key: topsecret
+    servlet:
+        multipart:
+            max-file-size: 1MB
+            max-request-size: 5MB
+logging:
+    level:
+        org:
+            hibernate:
+                SQL: DEBUG
+                orm:
+                    jdbc:
+                        bind: TRACE
+spring:
+    jpa:
+        defer-datasource-initialization: true
+        hibernate:
+            ddl-auto: create-drop
+    sql:
+      init:
+        mode: never

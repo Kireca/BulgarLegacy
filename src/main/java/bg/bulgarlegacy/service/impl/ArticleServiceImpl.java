@@ -70,7 +70,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
-    private ArticleEntity map(CreateArticleDTO createArticleDTO) {
+    ArticleEntity map(CreateArticleDTO createArticleDTO) {
         ArticleEntity newArticle = new ArticleEntity();
 
         UserEntity currentUser = getCurrentUser();
@@ -95,7 +95,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
-    private static ArticleViewDTO mapAsView(ArticleEntity articleEntity) {
+    static ArticleViewDTO mapAsView(ArticleEntity articleEntity) {
         ArticleViewDTO mappedArticle = new ArticleViewDTO();
 
         mappedArticle.setContent(articleEntity.getContent());

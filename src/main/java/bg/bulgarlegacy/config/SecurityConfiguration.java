@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                                 // All static resources are available for anyone.
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 //Allow anyone to see the home,login and registration pages.
-                                .requestMatchers(HOME_PAGE, LOGIN_PAGE, REGISTER_PAGE, LOGIN_ERROR_PAGE).permitAll()
+                                .requestMatchers(HOME_PAGE, LOGIN_PAGE, REGISTER_PAGE, LOGIN_ERROR_PAGE , MAINTENANCE).permitAll()
                                 //TODO BOOKS
 //                                .requestMatchers(ALL_BOOKS_PAGE).permitAll()
 //                                .requestMatchers(HttpMethod.GET, BOOK_PATHS).permitAll()

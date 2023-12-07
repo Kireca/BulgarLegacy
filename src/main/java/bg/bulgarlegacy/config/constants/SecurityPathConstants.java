@@ -12,4 +12,6 @@ public final class SecurityPathConstants {
     public static final String REGISTER_PAGE = "/users/register";
     public static final String ERROR = "/error";
 
+    public static final String MAINTENANCE = "/maintenance";
+
 }
