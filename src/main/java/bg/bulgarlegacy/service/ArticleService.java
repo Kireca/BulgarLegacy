@@ -20,4 +20,5 @@ public interface ArticleService {
 
     ArticleEntity getArticleByUuid(UUID uuid);
 
+    void deleteAllArticles();
 }

@@ -27,7 +27,6 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserRepository userRepository;
 
 
-
     public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
@@ -67,6 +66,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleEntity getArticleByUuid(UUID uuid) {
         return articleRepository.findByUuid(uuid).orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllArticles() {
+        articleRepository.deleteAll();
     }
 
 
