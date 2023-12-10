@@ -7,6 +7,9 @@ import bg.bulgarlegacy.model.enums.UserRoleEnum;
 import bg.bulgarlegacy.repository.UserRepository;
 import bg.bulgarlegacy.repository.UserRoleRepository;
 import bg.bulgarlegacy.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +59,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setActive(false);
         return user;
+    }
+
+    public UserEntity getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+       return userRepository.getByEmail(userDetails.getUsername());
     }
 }

@@ -2,7 +2,6 @@ package bg.bulgarlegacy.web;
 
 import bg.bulgarlegacy.model.dto.ArticleViewDTO;
 import bg.bulgarlegacy.model.dto.CreateArticleDTO;
-import bg.bulgarlegacy.model.dto.CreateCommentDTO;
 import bg.bulgarlegacy.model.dto.CommentViewDTO;
 import bg.bulgarlegacy.service.ArticleService;
 import bg.bulgarlegacy.service.CommentService;
@@ -118,7 +117,7 @@ class ArticleControllerTest {
     void testDelete() {
         UUID articleUUID = UUID.randomUUID();
 
-        String redirectURL = articleController.delete(articleUUID);
+        String redirectURL = articleController.deleteArticle(articleUUID);
 
         assertEquals("redirect:/articles/all", redirectURL);
         verify(commentService, times(1)).deleteCurrentArticleComments(articleUUID);

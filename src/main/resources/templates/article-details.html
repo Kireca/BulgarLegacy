@@ -44,8 +44,9 @@
                     <th:block th:text="*{content}"></th:block>
                 </li>
             </ul>
-            <div class="card-body" sec:authorize="isAuthenticated()">
-                <form th:method="delete"
+            <div class="card-body">
+                <form th:if="${currentUser.id == articleDetails.getAuthor().id} or ${currentUserRole} == 'ADMINISTRATOR' "
+                      th:method="delete"
                       th:action="@{/article/{articleUUID}(articleUUID=*{uuid})}">
                     <input type="submit" value="Изтрий Статия" class="link card-link"/>
                 </form>
@@ -81,21 +82,15 @@
                                 <div class="d-flex flex-row fs-12">
 
 
+                                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span>
+                                    </div>
+                                    <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span>
+                                    </div>
+                                    <div class="like p-2 cursor"><i class="fa fa-share"></i><span
+                                            class="ml-1">Share</span></div>
 
-                                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
-                                    <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
-                                    <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
-
-<!--                                    <form class="card-link like p-2 cursor" sec:authorize="hasAnyRole('ADMINISTRATOR')"-->
-<!--                                          th:method="delete"-->
-<!--                                          th:action=""-->
-<!--                                    >-->
-<!--                                        <input type="submit" value="Изтрий Статия" class="btn-link btn"/>-->
-
-<!--                                    </form>-->
-
-
-                                    <form sec:authorize="isAuthenticated()" th:action="@{/article/delete}" th:method="DELETE">
+                                    <form sec:authorize="isAuthenticated()" th:action="@{/article/delete}"
+                                          th:method="DELETE">
                                         <input type="hidden" name="commentId" th:value="*{id}">
                                         <button type="submit" class="btn btn-link">Изтрий коментар</button>
                                     </form>
@@ -106,11 +101,10 @@
                 </div>
             </div>
 
-
-
+<!--            DONT WORK ! ! ! -->
 <!--            <div class="form-control">-->
 <!--                <form th:method="POST"-->
-<!--                      th:action="@{/article/{uuid}(uuid = ${uuid})/comment}"-->
+<!--                      th:action="@{/article/{articleUUID}(articleUUID=*{uuid})/comment}"-->
 <!--                      th:object="${createCommentDTO}">-->
 <!--                    <div class="d-flex flex-row align-items-start">-->
 <!--                        <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">-->

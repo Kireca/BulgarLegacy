@@ -3,9 +3,11 @@ package bg.bulgarlegacy.web;
 import bg.bulgarlegacy.model.dto.ArticleViewDTO;
 import bg.bulgarlegacy.model.dto.CommentViewDTO;
 import bg.bulgarlegacy.model.dto.CreateArticleDTO;
-import bg.bulgarlegacy.model.dto.CreateCommentDTO;
+import bg.bulgarlegacy.model.entites.UserEntity;
+import bg.bulgarlegacy.model.entites.UserRoleEntity;
 import bg.bulgarlegacy.service.ArticleService;
 import bg.bulgarlegacy.service.CommentService;
+import bg.bulgarlegacy.service.UserService;
 import bg.bulgarlegacy.service.exceptions.ObjectNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -25,22 +28,21 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final CommentService commentService;
-    private UUID placeHolderUUID;
+    private final UserService userService;
+    protected UUID placeHolderUUID;
 
-    public ArticleController(ArticleService articleService, CommentService commentService) {
+    public ArticleController(ArticleService articleService, CommentService commentService, UserService userService) {
         this.articleService = articleService;
-
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @GetMapping("/add")
     public String add(Model model) {
-
         if (!model.containsAttribute("createArticleDTO")) {
             model.addAttribute("createArticleDTO", new CreateArticleDTO());
 
         }
-
         return "article-add";
     }
 
@@ -69,52 +71,31 @@ public class ArticleController {
         ArticleViewDTO articleViewDTO = articleService.getArticleDetail(uuid)
                 .orElseThrow(() -> new ObjectNotFoundException("Article with uuid " + uuid + " was not found!"));
 
+        //Page for comments view under each article.
         Page<CommentViewDTO> comments = commentService.getAllCommentsByArticleUuid(uuid, pageable);
 
+        //Here we take the logged-in user to access his details to check if he has access to delete articles.
+        UserEntity currentUser = userService.getCurrentUser();
+        List<UserRoleEntity> roles = currentUser.getRoles();
+        UserRoleEntity currentUserRoleEnum = roles.get(0);
+        String currentUserRole = currentUserRoleEnum.getRole().toString();
+
+
+        model.addAttribute("currentUserRole", currentUserRole);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("comments", comments);
         model.addAttribute("articleDetails", articleViewDTO);
 
+        //Here we keep the UUID of the current article cuz we need it for the redirect path after delete comment.
+        this.placeHolderUUID = articleViewDTO.getUuid();
 
-        placeHolderUUID = uuid;
         return "article-details";
     }
 
-    @ModelAttribute
-    public CreateCommentDTO createCommentDTO(){
-        return new CreateCommentDTO();
-    }
 
-
-//    @GetMapping("{uuid}/comment")
-//    public String addComment(@PathVariable UUID uuid, Model model) {
-//
-//        if (!model.containsAttribute("createCommentDTO")) {
-//            model.addAttribute("createCommentDTO", new CreateCommentDTO());
-//        }
-//        return "redirect:/article/" + placeHolderUUID;
-//    }
-//
-//    @PostMapping("{uuid}/comment")
-//    public String addComment(@Valid CreateCommentDTO createCommentDTO,
-//                             @PathVariable UUID uuid,
-//                             BindingResult bindingResult,
-//                             RedirectAttributes rAtt
-//                             ) {
-//
-//        if (bindingResult.hasErrors()) {
-//            rAtt.addFlashAttribute("createCommentDTO", createCommentDTO);
-//            rAtt.addFlashAttribute(
-//                    "org.springframework.validation.BindingResult.createCommentDTO", bindingResult);
-//            return "redirect:/article/" + placeHolderUUID;
-//        }
-//        Long id = articleService.getArticleDetail(placeHolderUUID).orElseThrow().getAuthor().getId();
-//        commentService.createComment(createCommentDTO, placeHolderUUID, id);
-//        return "redirect:/article/" + placeHolderUUID;
-//    }
-//
 
     @DeleteMapping("/{uuid}")
-    public String delete(@PathVariable("uuid") UUID uuid) {
+    public String deleteArticle(@PathVariable("uuid") UUID uuid) {
         commentService.deleteCurrentArticleComments(uuid);
         articleService.deleteArticle(uuid);
         return "redirect:/articles/all";
@@ -125,7 +106,7 @@ public class ArticleController {
     public String deleteComment(@RequestParam Long commentId) {
 
         commentService.deleteCommentFromArticleById(commentId);
-        return "redirect:/article/" + placeHolderUUID;
+        return "redirect:/article/" + this.placeHolderUUID;
 
     }
 

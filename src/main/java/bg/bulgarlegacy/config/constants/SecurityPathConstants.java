@@ -11,7 +11,8 @@ public final class SecurityPathConstants {
     public static final String LOGIN_ERROR_PAGE = "/users/login-error";
     public static final String REGISTER_PAGE = "/users/register";
     public static final String ERROR = "/error";
-
     public static final String MAINTENANCE = "/maintenance";
+
+    public static final String REMEMBER_ME_CONST = "${bulgarLegacy.remember.me.key}";
 
 }

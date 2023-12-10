@@ -7,16 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArticlesCleanerScheduler {
 
-
     private final ArticleService articleService;
 
     public ArticlesCleanerScheduler(ArticleService articleService) {
         this.articleService = articleService;
     }
 
-
     @Scheduled(cron = "0 0 0 1 * ?")
     public void cleanUp() {
+        //TODO: Delete all articles if they older then 30days:
         articleService.deleteAllArticles();
         System.out.println("All articles deleted!");
     }

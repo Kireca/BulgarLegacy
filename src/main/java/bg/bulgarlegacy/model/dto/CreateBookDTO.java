@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -22,7 +23,6 @@ public class CreateBookDTO {
     private UUID uuid;
 
     @NotNull
-    @Column(unique = true)
     @Size(min = 3, max = 100)
     private String title;
 

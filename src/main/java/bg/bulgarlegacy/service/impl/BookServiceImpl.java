@@ -49,9 +49,7 @@ public class BookServiceImpl implements BookService {
     public UUID createBook(CreateBookDTO createBookDTO) {
 
         BookEntity newBook = map(createBookDTO);
-
         newBook = bookRepository.save(newBook);
-
         return newBook.getUuid();
     }
 

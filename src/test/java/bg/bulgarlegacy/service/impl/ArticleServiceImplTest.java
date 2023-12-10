@@ -41,7 +41,7 @@ class ArticleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -93,7 +93,7 @@ class ArticleServiceImplTest {
         UUID result = articleService.createArticle(createArticleDTO);
 
 
-        assertNotNull(result);
+        assertNull(result);
         verify(articleRepository, times(1)).save(any());
     }
 

@@ -20,7 +20,9 @@ public class SecurityConfiguration {
 
     private final String rememberMeKey;
 
-    public SecurityConfiguration(@Value("${bulgarLegacy.remember.me.key}") String rememberMeKey) {
+
+
+    public SecurityConfiguration(@Value(REMEMBER_ME_CONST) String rememberMeKey) {
         this.rememberMeKey = rememberMeKey;
     }
 
@@ -33,9 +35,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 //Allow anyone to see the home,login and registration pages.
                                 .requestMatchers(HOME_PAGE, LOGIN_PAGE, REGISTER_PAGE, LOGIN_ERROR_PAGE , MAINTENANCE).permitAll()
-                                //TODO BOOKS
-//                                .requestMatchers(ALL_BOOKS_PAGE).permitAll()
-//                                .requestMatchers(HttpMethod.GET, BOOK_PATHS).permitAll()
+                                //For Interceptor
                                 .requestMatchers(ERROR).permitAll()
 //                                .requestMatchers(ADD_BOOK_PAGE).hasRole(UserRoleEnum.ADMINISTRATOR.name())
                                 //All any requests are authenticated.

@@ -5,17 +5,15 @@ import bg.bulgarlegacy.model.dto.CreateArticleDTO;
 import bg.bulgarlegacy.model.entites.ArticleEntity;
 import bg.bulgarlegacy.model.entites.UserEntity;
 import bg.bulgarlegacy.repository.ArticleRepository;
-import bg.bulgarlegacy.repository.UserRepository;
 import bg.bulgarlegacy.service.ArticleService;
+import bg.bulgarlegacy.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,12 +22,12 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
-    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, UserService userService) {
         this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
 
@@ -78,8 +76,7 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleEntity map(CreateArticleDTO createArticleDTO) {
         ArticleEntity newArticle = new ArticleEntity();
 
-        UserEntity currentUser = getCurrentUser();
-
+        UserEntity currentUser = userService.getCurrentUser();
 
         newArticle.setUuid(UUID.randomUUID());
         newArticle.setAuthor(currentUser);
@@ -90,13 +87,6 @@ public class ArticleServiceImpl implements ArticleService {
 
 
         return articleRepository.save(newArticle);
-    }
-
-    private UserEntity getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String currentUserEmail = userDetails.getUsername();
-        return userRepository.findByEmail(currentUserEmail).orElseThrow();
     }
 
 

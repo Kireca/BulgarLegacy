@@ -26,7 +26,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-
     @GetMapping("/add")
     public String add(Model model) {
 
